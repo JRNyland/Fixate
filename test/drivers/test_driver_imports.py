@@ -8,6 +8,7 @@ be imported"""
 
 
 def test_driver_files():
+    import fixate.drivers.dcload
     import fixate.drivers.dmm
     import fixate.drivers.dso
     import fixate.drivers.funcgen
