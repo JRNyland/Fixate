@@ -31,7 +31,8 @@ class RigolDL3000(DCLoad):
     # (i dont understand this at all, but pdf says it retuns an int)
     
     def esr(self) -> int:
-        return int(self.instrument.query("*ESR?").strip())
+        # return int(self.instrument.query("*ESR?").strip())
+        return self.send_query("*ESR?")
 
     # === IDN ======================================================
     # idn gets the instrument information as 4 values
@@ -51,11 +52,18 @@ class RigolDL3000(DCLoad):
     def idn(self) -> str:
         # this seems to be how the other VISA devices were calling the functions
         # .strip() removes the whitespaces and useless characters
-        return self.instrument.query("*IDN?").strip()
+        # return self.instrument.query("*IDN?").strip()
+        return self.send_query("*IDN?")
 
     # seems like the DriverProtocol (declared in the root __init) wants every driver to have get_identity
     # so this calls idn
     # dont stress this one too much, but leave it in
     def get_identity(self) -> str:
         return self.idn()
+    
+    def send_query(self, query: str) -> str:
+        return self.instrument.query(query).strip()
+
+    def get_ocr(self) -> int:
+        return int(self.send_query("*OCR?"))
 
